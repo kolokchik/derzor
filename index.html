@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дерзай и открывай | IT-трек "Молодая волна. Герои первых"</title>
+    <style>
+        :root {
+            --primary: #6E3AFF;
+            --secondary: #FF3A82;
+            --accent: #00E5FF;
+            --background: #F8F9FF;
+            --text: #2A2A3A;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            overflow-x: hidden;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        .wave-bg {
+            position: fixed;
+            width: 200%;
+            height: 150vh;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            z-index: -1;
+            top: -50vh;
+            left: -50%;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.1;
+            animation: wave 15s infinite alternate;
+        }
+
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(5deg); }
+        }
+
+        header {
+            padding: 1.5rem 1rem;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin: 0;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-top: 0.5rem;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Стили для чата */
+        .chat-section {
+            width: 100%;
+            max-width: 800px;
+            margin: 1.5rem auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .chat-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .chat-header {
+            padding: 1rem;
+            background: white;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+
+        .chat-header h2 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 1.3rem;
+        }
+
+        #chat-content {
+            display: flex;
+            flex-direction: column;
+            height: 60vh;
+            max-height: 500px;
+        }
+
+        #username-section {
+            padding: 0.8rem;
+            background: #f5f5ff;
+            display: flex;
+            gap: 8px;
+        }
+
+        #username-section input {
+            flex-grow: 1;
+            padding: 10px 12px;
+            border: 2px solid #eee;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        #username-section input:focus {
+            border-color: var(--accent);
+        }
+
+        #username-section button {
+            padding: 10px 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        #chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 0.8rem;
+            background: white;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .message {
+            padding: 8px 12px;
+            margin-bottom: 12px;
+            background: #f5f5ff;
+            border-radius: 12px;
+            position: relative;
+            max-width: 90%;
+            animation: fadeIn 0.3s ease-out;
+            font-size: 0.9rem;
+            word-break: break-word;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .like-btn {
+            background: none;
+            border: none;
+            color: var(--secondary);
+            cursor: pointer;
+            padding: 2px 6px;
+            margin-left: 8px;
+            font-size: 12px;
+            position: absolute;
+            right: 8px;
+            bottom: 3px;
+        }
+
+        .message-input {
+            display: flex;
+            gap: 8px;
+            padding: 0.8rem;
+            background: #f5f5ff;
+            border-top: 1px solid #eee;
+        }
+
+        .message-input input {
+            flex-grow: 1;
+            padding: 10px 12px;
+            border: 2px solid #eee;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .message-input button {
+            padding: 10px 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        /* Блок команды */
+        .team-section {
+            width: 100%;
+            margin: 3rem auto 2rem;
+            text-align: center;
+        }
+
+        .team-section h2 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1.2rem;
+            padding: 0 0.5rem;
+        }
+
+        .team-member {
+            background: white;
+            border-radius: 15px;
+            padding: 1.2rem 0.8rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-member::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .team-member img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+            margin-bottom: 0.8rem;
+        }
+
+        .team-member h3 {
+            margin: 0.3rem 0;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .team-member p {
+            margin: 0;
+            color: var(--text);
+            opacity: 0.7;
+            font-size: 0.8rem;
+        }
+
+        /* Медиа блоки */
+        .media-section {
+            width: 100%;
+            margin: 3rem auto;
+        }
+
+        .media-section h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .day-section h3 {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0 1rem;
+        }
+
+        .day-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(45vw, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2.5rem;
+            padding: 0 0.5rem;
+        }
+
+        .media-item {
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            aspect-ratio: 1/1;
+        }
+
+        .media-item img, .media-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .quote-item {
+            background: white;
+            padding: 1.2rem;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            grid-column: 1 / -1;
+        }
+
+        .quote-item p {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0;
+            color: var(--primary);
+        }
+
+        .comic-panel {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(45vw, 1fr));
+            gap: 1rem;
+        }
+
+        /* Стили для лайков на медиа */
+        .media-like-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 2;
+            font-size: 18px;
+        }
+        
+        .media-like-btn.liked {
+            color: var(--secondary);
+        }
+        
+        .like-count {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            z-index: 2;
+        }
+
+        /* Футер */
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            margin-top: 3rem;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        /* Улучшения для очень маленьких экранов */
+        @media (max-width: 400px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .media-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Адаптация для планшетов и больших экранов */
+        @media (min-width: 768px) {
+            header {
+                padding: 2rem;
+            }
+            
+            h1 {
+                font-size: 3rem;
+            }
+            
+            .subtitle {
+                font-size: 1.3rem;
+            }
+            
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .chat-section {
+                margin: 2.5rem auto;
+            }
+            
+            .team-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            .media-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            h1 {
+                font-size: 4rem;
+            }
+            
+            .chat-section {
+                max-width: 800px;
+            }
+            
+            .team-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 2rem;
+            }
+            
+            .media-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wave-bg"></div>
+    
+    <header>
+        <h1>Дерзай и открывай</h1>
+        <div class="subtitle">IT-направление форума "Молодая волна. Герои первых"</div>
+        <div class="subtitle">Инновации и прогресс - два спутника моего дела. Я не боюсь новых вызовов, ведь именно за ними кроются открытия. Век техники будет покорен, благодаря моим способностям дерзать и открывать"</div>
+    </header>
+    
+    <div class="container">
+        <!-- Блок 1: Онлайн чат -->
+        <div class="chat-section">
+            <div class="chat-header">
+                <h2>Чат трека в реальном времени</h2>
+            </div>
+            <div id="chat-content">
+                <div id="username-section">
+                    <input type="text" id="username" placeholder="Введите ваше имя" required>
+                    <button onclick="setUsername()">Сохранить</button>
+                </div>
+                <div id="chat-messages"></div>
+                <div class="message-input">
+                    <input type="text" id="message" placeholder="Введите сообщение..." disabled>
+                  <!--  <button onclick="sendMessage()" disabled id="send-btn">Отправить</button>-->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Блок 2: Команда наставников -->
+        <div class="team-section">
+            <h2>Наша команда</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <img src="young_wave/mentors/dima.jpg" alt="Дима">
+                    <h3>Дима</h3>
+                    <p>Ментор трека</p>
+                </div>
+                <div class="team-member">
+                    <img src="young_wave/mentors/july.jpg" alt="Юля">
+                    <h3>Юля</h3>
+                    <p>Старший наставник</p>
+                </div>
+                <div class="team-member">
+                    <img src="young_wave/mentors/misha.jpg" alt="Миша">
+                    <h3>Миша</h3>
+                    <p>Наставник</p>
+                </div>
+                <div class="team-member">
+                    <img src="young_wave/mentors/mary.jpg" alt="Мариянуш">
+                    <h3>Мариянуш</h3>
+                    <p>Наставник</p>
+                </div>
+                <div class="team-member">
+                    <img src="young_wave/mentors/liza.jpg" alt="Лиза">
+                    <h3>Лиза</h3>
+                    <p>Наставник</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Блок 3: Медиа материалы по дням -->
+        <div class="media-section">
+            <h2>Фотоотчёт с форума</h2>
+            
+            <!-- День 1 -->
+            <div class="day-section">
+                <h3>День 1</h3>
+                <div class="media-grid">
+                    <div class="media-item" data-media-id="1_day_1">
+                        <img src="young_wave/1_day/day1_1.jpg" alt="День 1 - Фото 1">
+                        <button class="media-like-btn">❤️</button>
+                        <div class="like-count">0</div>
+                    </div>
+                    <div class="media-item" data-media-id="1_day_2">
+                        <img src="young_wave/1_day/day1_2.jpg" alt="День 1 - Фото 2">
+                        <button class="media-like-btn">❤️</button>
+                        <div class="like-count">0</div>
+                    </div>
+                    <div class="media-item" data-media-id="1_day_3">
+                        <img src="young_wave/1_day/day1_3.jpg" alt="День 1 - Фото 3">
+                        <button class="media-like-btn">❤️</button>
+                        <div class="like-count">0</div>
+                    </div>
+                    <div class="quote-item">
+                        <p>"Первый день - первые открытия!"</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- День 2 -->
+            <div class="day-section">
+                <h3>День 2</h3>
+                <div class="media-grid">
+                    <div class="comic-panel">
+                        <div class="media-item" data-media-id="2_day_1">
+                            <img src="young_wave/2_day/day2_1.jpg" alt="День 2 - Коллаж 1">
+                            <button class="media-like-btn">❤️</button>
+                            <div class="like-count">0</div>
+                        </div>
+                        <div class="media-item" data-media-id="2_day_2">
+                            <img src="young_wave/2_day/day2_2.jpg" alt="День 2 - Коллаж 2">
+                            <button class="media-like-btn">❤️</button>
+                            <div class="like-count">0</div>
+                        </div>
+                        <div class="media-item" data-media-id="2_day_3">
+                            <img src="young_wave/2_day/day2_3.jpg" alt="День 2 - Коллаж 3">
+                            <button class="media-like-btn">❤️</button>
+                            <div class="like-count">0</div>
+                        </div>
+                        <div class="media-item" data-media-id="2_day_4">
+                            <img src="young_wave/2_day/day2_4.jpg" alt="День 2 - Коллаж 4">
+                            <button class="media-like-btn">❤️</button>
+                            <div class="like-count">0</div>
+                        </div>
+                    </div>
+                    <div class="quote-item">
+                        <p>"Вдохновение и технологии идут рука об руку"</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- День 3 -->
+            <div class="day-section">
+                <h3>День 3</h3>
+                <div class="media-grid">
+                    <div class="media-item" data-media-id="3_day_1">
+                        <img src="young_wave/3_day/day3_1.jpg" alt="День 3 - Фото 1">
+                        <button class="media-like-btn">❤️</button>
+                        <div class="like-count">0</div>
+                    </div>
+                    <div class="media-item" data-media-id="3_day_2">
+                        <img src="young_wave/3_day/day3_2.jpg" alt="День 3 - Фото 2">
+                        <button class="media-like-btn">❤️</button>
+                        <div class="like-count">0</div>
+                    </div>
+                    <div class="media-item" data-media-id="3_day_video">
+                        <video controls playsinline>
+                            <source src="young_wave/3_day/day3_video.mp4" type="video/mp4">
+                            Ваш браузер не поддерживает видео.
+                        </video>
+                        <button class="media-like-btn">❤️</button>
+                        <div class="like-count">0</div>
+                    </div>
+                    <div class="quote-item">
+                        <p>"Самые яркие моменты форума"</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- День 4 -->
+            <div class="day-section">
+                <h3>День 4</h3>
+                <div class="media-grid">
+                    <div class="media-item" data-media-id="4_day_1">
+                        <img src="young_wave/4_day/day4_1.jpg" alt="День 4 - Фото 1">
+                        <button class="media-like-btn">❤️</button>
+                        <div class="like-count">0</div>
+                    </div>
+                    <div class="media-item" data-media-id="4_day_2">
+                        <img src="young_wave/4_day/day4_2.jpg" alt="День 4 - Фото 2">
+                        <button class="media-like-btn">❤️</button>
+                        <div class="like-count">0</div>
+                    </div>
+                    <div class="media-item" data-media-id="4_day_3">
+                        <img src="young_wave/4_day/day4_3.jpg" alt="День 4 - Фото 3">
+                        <button class="media-like-btn">❤️</button>
+                        <div class="like-count">0</div>
+                    </div>
+                    <div class="quote-item">
+                        <p>"Завершение, но не прощание!"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2025 "Молодая волна. Герои первых" | IT-трек "Дерзай и открывай"</p>
+    </footer>
+
+    <script>
+        let currentUser = '';
+        let mediaLikes = {};
+        
+        // Функции для чата
+        function setUsername() {
+            const username = document.getElementById('username').value.trim();
+            if (username) {
+                currentUser = username;
+                document.getElementById('username').disabled = true;
+                document.querySelector('#username-section button').disabled = true;
+                document.getElementById('message').disabled = false;
+                document.getElementById('send-btn').disabled = false;
+                document.getElementById('message').focus();
+                loadMessages();
+                loadMediaLikes();
+                setInterval(loadMessages, 2000);
+            }
+        }
+        
+        function sendMessage() {
+            const message = document.getElementById('message').value.trim();
+            if (message && currentUser) {
+                fetch('chat.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `action=send&user=${encodeURIComponent(currentUser)}&message=${encodeURIComponent(message)}`
+                })
+                .then(response => response.text())
+                .then(() => {
+                    document.getElementById('message').value = '';
+                    loadMessages();
+                });
+            }
+        }
+        
+        function loadMessages() {
+            fetch('chat.php?action=get')
+                .then(response => response.json())
+                .then(messages => {
+                    const chat = document.getElementById('chat-messages');
+                    chat.innerHTML = '';
+                    
+                    messages.forEach(msg => {
+                        const messageDiv = document.createElement('div');
+                        messageDiv.className = 'message';
+                        
+                        const userSpan = document.createElement('span');
+                        userSpan.className = 'user';
+                        userSpan.textContent = msg.user + ': ';
+                        
+                        const textSpan = document.createElement('span');
+                        textSpan.className = 'text';
+                        textSpan.textContent = msg.message;
+                        
+                        const likeButton = document.createElement('button');
+                        likeButton.className = 'like-btn';
+                        likeButton.innerHTML = `❤️ ${msg.likes || 0}`;
+                        likeButton.onclick = () => likeMessage(msg.id);
+                        
+                        messageDiv.appendChild(userSpan);
+                        messageDiv.appendChild(textSpan);
+                        messageDiv.appendChild(likeButton);
+                        
+                        chat.appendChild(messageDiv);
+                    });
+                    
+                    chat.scrollTop = chat.scrollHeight;
+                });
+        }
+        
+        function likeMessage(messageId) {
+            if (!currentUser) return;
+            
+            fetch('like.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `message_id=${messageId}&user=${encodeURIComponent(currentUser)}`
+            })
+            .then(() => loadMessages());
+        }
+        
+        // Функции для лайков на медиа
+        async function loadMediaLikes() {
+            try {
+                const response = await fetch('get_media_likes.php');
+                mediaLikes = await response.json();
+                updateMediaLikesUI();
+            } catch (error) {
+                console.error('Ошибка загрузки лайков:', error);
+            }
+        }
+        
+        function updateMediaLikesUI() {
+            document.querySelectorAll('.media-item').forEach(item => {
+                const mediaId = item.dataset.mediaId;
+                const likeBtn = item.querySelector('.media-like-btn');
+                const likeCountEl = item.querySelector('.like-count');
+                
+                if (mediaLikes[mediaId]) {
+                    likeCountEl.textContent = mediaLikes[mediaId].count;
+                    
+                    if (currentUser && mediaLikes[mediaId].users.includes(currentUser)) {
+                        likeBtn.classList.add('liked');
+                    } else {
+                        likeBtn.classList.remove('liked');
+                    }
+                }
+            });
+        }
+        
+        async function likeMedia(mediaId) {
+            if (!currentUser) {
+                alert('Пожалуйста, введите имя в чате перед тем как ставить лайки');
+                return;
+            }
+            
+            try {
+                const response = await fetch('like_media.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `media_id=${mediaId}&user=${encodeURIComponent(currentUser)}`
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    if (!mediaLikes[mediaId]) {
+                        mediaLikes[mediaId] = { count: 0, users: [] };
+                    }
+                    
+                    const userIndex = mediaLikes[mediaId].users.indexOf(currentUser);
+                    if (userIndex === -1) {
+                        mediaLikes[mediaId].count++;
+                        mediaLikes[mediaId].users.push(currentUser);
+                    } else {
+                        mediaLikes[mediaId].count--;
+                        mediaLikes[mediaId].users.splice(userIndex, 1);
+                    }
+                    
+                    updateMediaLikesUI();
+                }
+            } catch (error) {
+                console.error('Ошибка при отправке лайка:', error);
+            }
+        }
+        
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('username').focus();
+            
+            // Назначаем обработчики для кнопок лайков
+            document.querySelectorAll('.media-like-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const mediaId = this.closest('.media-item').dataset.mediaId;
+                    likeMedia(mediaId);
+                });
+            });
+            
+            loadMediaLikes();
+            
+            // Оптимизация для мобильных устройств
+            document.addEventListener('touchstart', function() {}, {passive: true});
+        });
+    </script>
+</body>
+</html>

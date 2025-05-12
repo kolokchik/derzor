@@ -1,0 +1,122 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.chat-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#username-section {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#username-section input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#username-section button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#username-section button:hover {
+    background-color: #45a049;
+}
+
+#chat-messages {
+    height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: #fafafa;
+}
+
+.message {
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    background-color: #e9f5ff;
+    border-radius: 4px;
+    position: relative;
+}
+
+.user {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.like-btn {
+    background: none;
+    border: none;
+    color: #e74c3c;
+    cursor: pointer;
+    padding: 2px 6px;
+    margin-left: 10px;
+    font-size: 14px;
+    float: right;
+}
+
+.like-btn:hover {
+    color: #c0392b;
+}
+
+.like-btn:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+.message-input {
+    display: flex;
+    gap: 10px;
+}
+
+.message-input input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.message-input button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.message-input button:hover {
+    background-color: #2980b9;
+}
+
+.message-input button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
